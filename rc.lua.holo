@@ -63,14 +63,14 @@ beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/holo/theme.lua")
 -- common
 modkey     = "Mod4"
 altkey     = "Mod1"
-terminal   = "urxvtc" or "xterm"
+terminal   = "xfce4-terminal" or "xterm"
 editor     = os.getenv("EDITOR") or "nano" or "vi"
 editor_cmd = terminal .. " -e " .. editor
 
 -- user defined
-browser    = "dwb"
-browser2   = "iron"
-gui_editor = "gvim"
+browser    = "chromium"
+browser2   = "firefox"
+gui_editor = "geany"
 graphics   = "gimp"
 musiplr   = terminal .. " -e ncmpcpp "
 
@@ -816,3 +816,44 @@ for s = 1, screen.count() do screen[s]:connect_signal("arrange", function ()
       end)
 end
 -- }}}
+
+function get_conky()
+    local clients = client.get()
+    local conky = nil
+    local i = 1
+    while clients[i]
+    do
+        if clients[i].class == "Conky"
+        then
+            conky = clients[i]
+        end
+        i = i + 1
+    end
+    return conky
+end
+function raise_conky()
+    local conky = get_conky()
+    if conky
+    then
+        conky.ontop = true
+    end
+end
+function lower_conky()
+    local conky = get_conky()
+    if conky
+    then
+        conky.ontop = false
+    end
+end
+function toggle_conky()
+    local conky = get_conky()
+    if conky
+    then
+        if conky.ontop
+        then
+            conky.ontop = false
+        else
+            conky.ontop = true
+        end
+    end
+end
